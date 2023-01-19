@@ -10,9 +10,13 @@ import HomeSvg from "../assets/svg/HomeSvg";
 import ExileSvg from "../assets/svg/ExileSvg";
 import ListSvg from "../assets/svg/ListSvg";
 import { useRef, useState } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ListDemon from "../list/list.demon";
+import { View } from "react-native";
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
-  const Tab = createBottomTabNavigator();
+export const TabNavigator = () => {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef<any>();
   const [isSound, setIsSound] = useState<boolean>(true);
@@ -58,14 +62,29 @@ const TabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="List"
-          component={List}
+          name="ListDemon"
+          component={StackNavigator}
           options={{
             tabBarLabel: "Demons",
             tabBarIcon: ({ color, size }) => <ListSvg color={color} />,
           }}
         />
       </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+const StackNavigator = () => {
+  return (
+    <NavigationContainer independent>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="List" component={List} />
+        <Stack.Screen name="Demon" component={ListDemon} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

@@ -7,11 +7,16 @@ import { NewsType } from "./list.type";
 
 const List = (props) => {
   const [newsData, setNewsData] = useState<NewsType[]>(initialNews);
+
+  const onListItemClick = (item:NewsType) =>{
+   props.navigation.navigate('Demon',{selectedDemon:item})
+  }
+
   return (
     <View style={styled.listContainer}>
       <FlatList
         data={newsData}
-        renderItem={({ item }) => <ListItem news={item} />}
+        renderItem={({ item }) => <ListItem onItemClick={onListItemClick} news={item} />}
       />
     </View>
   );

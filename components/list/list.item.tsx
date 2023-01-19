@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { NewsType } from "./list.type";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { ListItemProps, NewsType } from "./list.type";
 
-const ListItem = (props) => {
+const ListItem = (props: ListItemProps) => {
   const currentItem: NewsType = props.news;
 
   const getTextDescroption = (text: string): string => {
@@ -12,11 +12,21 @@ const ListItem = (props) => {
   return (
     <View style={styled.listItemContainer}>
       <View style={styled.listItemImage}>
-        <Image style={styled.itemImage} source={currentItem.imageName} />
+        <Image style={styled.itemImage} source={currentItem.mainImage} />
       </View>
       <View style={styled.listText}>
         <View style={styled.boxTitle}>
-          <Text style={styled.title}>{currentItem.title}</Text>
+          <View>
+            <Text style={styled.title}>{currentItem.title}</Text>
+          </View>
+          <View style={styled.boxButton}>
+            <Pressable onPress={() => props.onItemClick(props.news)}>
+              <Image
+                style={styled.boxButtonImage}
+                source={require("../../assets/images/menu.png")}
+              />
+            </Pressable>
+          </View>
         </View>
         <View style={styled.boxDescription}>
           <Text style={styled.description}>
@@ -53,9 +63,18 @@ const styled = StyleSheet.create({
   },
   boxTitle: {
     flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  boxButton: {
+    paddingRight: 0,
+  },
+  boxButtonImage: {
+    width: 25,
+    height: 25,
   },
   boxDescription: {
-    flex:4,
+    flex: 4,
   },
   title: {
     fontFamily: "RalewayHeader",
