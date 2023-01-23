@@ -8,6 +8,7 @@ const PageController = () => {
   // useEffect(() => {
   //   setTimeout(() => setLoading((prev) => !prev), 3000);
   // }, []);
+
   return (
     <View style={styles.container}>
       {loading ? <Loader /> : <TabNavigator />}

@@ -5,8 +5,8 @@ import {
   GestureResponderEvent,
   Animated,
   View,
-  Text,
   Vibration,
+  Text,
 } from "react-native";
 import PerntagramSvg from "../assets/svg/Pentagram";
 import { Audio } from "expo-av";
@@ -16,11 +16,13 @@ const Exile = () => {
   const [isPress, setIsPress] = useState<number>(0);
   const [sound1, setSound1] = useState<Audio.Sound>();
   const [sound2, setSound2] = useState<Audio.Sound>();
+
   const anim = useRef(new Animated.Value(0)).current;
   const callTime: number = 10000;
   const resetTime: number = 1000;
   const random = Math.floor(Math.random() * (1000 - 200) + 200);
   const VIBRO_PATTENR = [1 * random, 1 * random, 1 * random, 1 * random];
+
   const onPernagramPress = async (e) => {
     const { sound } = await Audio.Sound.createAsync(
       require("../../assets/sounds/excorcism.mp3")
@@ -37,7 +39,7 @@ const Exile = () => {
         useNativeDriver: true,
       }).start();
       anim.addListener(({ value }) => setIsPress(value));
-      Vibration.vibrate(VIBRO_PATTENR, true);
+      // Vibration.vibrate(VIBRO_PATTENR, true);
     }
   };
   const onPernagramPressOut = async (event: GestureResponderEvent) => {
@@ -65,12 +67,16 @@ const Exile = () => {
         <ExileAtributes />
       </View>
       <Animated.View style={styled.exilePentagram}>
-        <TouchableOpacity
-          onPressIn={onPernagramPress}
-          onPressOut={onPernagramPressOut}
+        <View
+          style={isPress >= 100 ? styled.exilePentagramBorder : {}}
         >
-          <PerntagramSvg isPress={isPress} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPressIn={onPernagramPress}
+            onPressOut={onPernagramPressOut}
+          >
+            <PerntagramSvg isPress={isPress} />
+          </TouchableOpacity>
+        </View>
       </Animated.View>
     </View>
   );
@@ -90,6 +96,16 @@ const styled = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  exilePentagramBorder:{
+    width: 279,
+    height: 279,
+    borderRadius: 180,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "red",
+    elevation:30,
+    backgroundColor: "#64262C"
+  }
 });
 
 export default Exile;

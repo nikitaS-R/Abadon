@@ -1,17 +1,16 @@
-import Svg, {
-  Path,
-  LinearGradient,
-  Stop,
-  Defs,
-  Circle,
-} from "react-native-svg";
+import Svg, { Path, LinearGradient, Stop, Defs } from "react-native-svg";
 
 const PerntagramSvg = (props) => {
   const strokeColor = "black";
   const strokeWidth = 2;
-  //
   return (
-    <Svg viewBox="0 0 600 600" height={300} width={300} {...props}>
+    <Svg
+      viewBox="0 0 600 600"
+      height={300}
+      width={300}
+      style={{ transform: [{ rotate: `${props.isPress}deg` }] }}
+      {...props}
+    >
       <Defs>
         <LinearGradient id="path" x1="50%" y1="100%" x2="50%" y2="0%">
           <Stop

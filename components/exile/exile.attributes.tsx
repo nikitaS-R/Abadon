@@ -7,7 +7,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 const ExileAtributes = () => {
   const [demons, setDemons] = useState<ExileDemonType[]>(initialDemons);
   const [attributes, setAttributes] =
-    useState<ExileAttributeType[]>(initialAttributes);
+  useState<ExileAttributeType[]>(initialAttributes);
   const [openDemon, setOpenDemon] = useState<boolean>(false);
   const [openAtr, setOpenAtr] = useState<boolean>(false);
   const [selectedDemon, setSelectedDemon] = useState(null);
