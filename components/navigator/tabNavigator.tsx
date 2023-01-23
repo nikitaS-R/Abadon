@@ -12,7 +12,6 @@ import ListSvg from "../assets/svg/ListSvg";
 import { useRef, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ListDemon from "../list/list.demon";
-import { View } from "react-native";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 

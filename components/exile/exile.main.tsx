@@ -6,10 +6,11 @@ import {
   Animated,
   View,
   Text,
+  Vibration,
 } from "react-native";
-import Svg, { Circle } from "react-native-svg";
 import PerntagramSvg from "../assets/svg/Pentagram";
 import { Audio } from "expo-av";
+import ExileAtributes from "./exile.attributes";
 
 const Exile = () => {
   const [isPress, setIsPress] = useState<number>(0);
@@ -18,20 +19,26 @@ const Exile = () => {
   const anim = useRef(new Animated.Value(0)).current;
   const callTime: number = 10000;
   const resetTime: number = 1000;
+  const random = Math.floor(Math.random() * (1000 - 200) + 200);
+  const VIBRO_PATTENR = [1 * random, 1 * random, 1 * random, 1 * random];
   const onPernagramPress = async (e) => {
     const { sound } = await Audio.Sound.createAsync(
       require("../../assets/sounds/excorcism.mp3")
     );
     setSound1(sound);
     sound.setVolumeAsync(1);
-    await sound.playAsync();
-    sound2.unloadAsync();
-    Animated.timing(anim, {
-      toValue: 100,
-      duration: callTime,
-      useNativeDriver: true,
-    }).start();
-    anim.addListener(({ value }) => setIsPress(value));
+    if (isPress < 100) {
+      await sound.playAsync();
+      if (sound2) sound2.unloadAsync();
+
+      Animated.timing(anim, {
+        toValue: 100,
+        duration: callTime,
+        useNativeDriver: true,
+      }).start();
+      anim.addListener(({ value }) => setIsPress(value));
+      Vibration.vibrate(VIBRO_PATTENR, true);
+    }
   };
   const onPernagramPressOut = async (event: GestureResponderEvent) => {
     const { sound } = await Audio.Sound.createAsync(
@@ -39,8 +46,8 @@ const Exile = () => {
     );
     setSound2(sound);
     sound.setVolumeAsync(1);
-    await sound.playAsync();
     if (isPress < 100) {
+      if (isPress > 20) sound.playAsync();
       Animated.timing(anim, {
         toValue: 0,
         duration: resetTime,
@@ -49,26 +56,23 @@ const Exile = () => {
       setIsPress(0);
     }
     sound1.unloadAsync();
+    Vibration.cancel();
   };
+
   return (
-    <Animated.View style={styled.exileContainer}>
-      <TouchableOpacity
-        onPressIn={onPernagramPress}
-        onPressOut={onPernagramPressOut}
-      >
-        {/* <Svg viewBox="0 0 200 220" style={{position:'absolute'}} height={300} width={300}>
-          <Circle
-            cx="100"
-            cy="110"
-            r="100"
-            stroke="blue"
-            strokeWidth="10"
-            strokeOpacity={0.2}
-          />
-        </Svg> */}
-        <PerntagramSvg isPress={isPress} />
-      </TouchableOpacity>
-    </Animated.View>
+    <View style={styled.exileContainer}>
+      <View style={styled.exileAtributes}>
+        <ExileAtributes />
+      </View>
+      <Animated.View style={styled.exilePentagram}>
+        <TouchableOpacity
+          onPressIn={onPernagramPress}
+          onPressOut={onPernagramPressOut}
+        >
+          <PerntagramSvg isPress={isPress} />
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
   );
 };
 
@@ -76,6 +80,13 @@ const styled = StyleSheet.create({
   exileContainer: {
     flex: 1,
     backgroundColor: "#64262C",
+  },
+  exileAtributes: {
+    flex: 1,
+    zIndex: 10,
+  },
+  exilePentagram: {
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
   },

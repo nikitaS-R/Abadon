@@ -1,7 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Pressable,
+} from "react-native";
 import AnimatedImage from "./HomeAnumatedImage";
 import { Audio } from "expo-av";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Home = (props) => {
   const [sound, setSound] = useState<Audio.Sound>();
@@ -29,13 +45,28 @@ const Home = (props) => {
     }
   }, [props.isSound, isMute]);
 
+  const onButPress = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "You've got mail! 📬",
+        body: 'Here is the notification body',
+        data: { data: 'goes here' },
+      },
+      trigger:null,
+    });
+  };
+
   return (
     <View style={styled.homeContainer}>
       <View style={styled.volumeButton}>
         <TouchableOpacity onPress={onMuteChange}>
           <Image
             style={styled.volumeIcon}
-            source={isMute ? require("../../assets/images/up.png") : require("../../assets/images/mute.png")}
+            source={
+              isMute
+                ? require("../../assets/images/up.png")
+                : require("../../assets/images/mute.png")
+            }
           />
         </TouchableOpacity>
       </View>

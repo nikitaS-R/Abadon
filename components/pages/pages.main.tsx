@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import Home from "../home/Home.main";
 import Loader from "../loader/loader.main";
 import TabNavigator from "../navigator/tabNavigator";
 
